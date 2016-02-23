@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 
 def normalize_name(name):
     return re.sub(r'([A-Z])', r'_\1', name).replace(" ", "_").lower().strip(" \t_")
@@ -11,19 +12,23 @@ def adapt_template(data, target_root_path, path, filename, target_filename = Non
     else:
         target_filename = target_filename.replace("@APPNAME@", project_name)
 
+    target_path = os.path.join(target_root_path, path)
+    if not os.path.exists(target_path):
+        os.makedirs(target_path)
+    source = os.path.join("templates", path, filename)
+    target = os.path.join(target_path, target_filename)
+
+    shutil.copy(source, target)
+
     output_str = ""
-    with open(os.path.join("templates", path, filename), "r") as fd:
+    with open(target, "r") as fd:
         output_str = fd.read()
     output_str = output_str.replace("@APPNAME@", project_name)
     output_str = output_str.replace("@VERSION@", data["APP_VERSION"])
     output_str = output_str.replace("@MAINTENER@", data["APP_MAINTENER"])
     output_str = output_str.replace("@DESCRIPTION@", data["APP_DESCRIPTION"])
 
-    target_path = os.path.join(target_root_path, path)
-
-    if not os.path.exists(target_path):
-        os.makedirs(target_path)
-    with open(os.path.join(target_path, target_filename), "w") as fd:
+    with open(target, "w") as fd:
         fd.write(output_str + "\n")
 
 if __name__ == "__main__":
@@ -61,6 +66,7 @@ if __name__ == "__main__":
         ("build", "Dockerfile.deploy", None),
         ("build", "install_dev.sh", None),
         ("build", "install_nginx.sh", None),
+        ("build", "nginx_host.conf", None),
         ("conf", "nginx_default.conf", None),
         ("conf", "srv.service", "@APPNAME@.service"),
         (".", "Makefile", None),

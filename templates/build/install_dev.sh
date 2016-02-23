@@ -14,5 +14,5 @@ ln -s /mnt/src/conf/nginx_default.conf /etc/nginx/sites-available/@APPNAME@
 ln -s /etc/nginx/sites-available/@APPNAME@ /etc/nginx/sites-enabled/@APPNAME@
 
 sqlite3 /var/www/@APPNAME@/api/@APPNAME@.db < /var/www/@APPNAME@/api/@APPNAME@.sql
-chown -R www-data:www-data /var/www/@APPNAME@/api
+chown -R www-data:www-data /var/www/@APPNAME@/api/@APPNAME@.db
 
