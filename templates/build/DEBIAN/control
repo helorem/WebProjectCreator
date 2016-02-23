@@ -1,0 +1,11 @@
+Package: @APPNAME@
+Version: @VERSION@
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Pre-Depends: bash, sqlite3
+Depends: python-flask, python-sqlite
+Maintainer: @MAINTENER@
+Description: @DESCRIPTION@
+
