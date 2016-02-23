@@ -23,7 +23,7 @@ def adapt_template(data, target_root_path, path, filename, target_filename = Non
 
     if not os.path.exists(target_path):
         os.makedirs(target_path)
-    with open(os.path.join(target_path, filename), "w") as fd:
+    with open(os.path.join(target_path, target_filename), "w") as fd:
         fd.write(output_str + "\n")
 
 if __name__ == "__main__":
