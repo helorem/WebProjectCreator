@@ -1,7 +1,8 @@
 import os
+import re
 
 def normalize_name(name):
-    return name.replace(r'([A-Z])', "_\1").replace(" ", "_").lower()
+    return re.sub(r'([A-Z])', r'_\1', name).replace(" ", "_").lower().strip(" \t_")
 
 def adapt_template(data, target_root_path, path, filename, target_filename = None):
     project_name = normalize_name(data["APP_NAME"])
@@ -46,7 +47,7 @@ if __name__ == "__main__":
             if res:
                 data[key] = res
                 loop = False
-            if item["mandatory"] and not res:
+            elif item["mandatory"]:
                 print "This parameter is mandatory"
             else:
                 data[key] = item["value"]
