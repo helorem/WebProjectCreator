@@ -23,7 +23,7 @@ deploy: deb
 run:
 	docker stop @APPNAME@ | exit 0
 	docker rm @APPNAME@ | exit 0
-	docker run -dit --name=@APPNAME@ --expose=80 @APPNAME@
+	docker run --privileged=true -v /sys/fs/cgroup:/sys/fs/cgroup:ro -dit --name=@APPNAME@ --expose=80 @APPNAME@ /lib/systemd/systemd systemd.unit=emergency.service
 	docker exec -ti @APPNAME@ service @APPNAME@ start
 	docker exec -ti @APPNAME@ service nginx start
 
@@ -34,10 +34,10 @@ deploy-dev:
 run-dev:
 	docker stop @APPNAME@ | exit 0
 	docker rm @APPNAME@ | exit 0
-	docker run -dit --name=@APPNAME@ -v "$(PWD)":"/mnt/src" --expose=80 @APPNAME@
+	docker run --privileged=true -v /sys/fs/cgroup:/sys/fs/cgroup:ro -dit --name=@APPNAME@ -v "$(PWD)":"/mnt/src" --expose=80 @APPNAME@ /lib/systemd/systemd systemd.unit=emergency.service
 	docker exec -ti @APPNAME@ /mnt/src/build/install_dev.sh
-	docker exec -ti @APPNAME@ service @APPNAME@ start
-	docker exec -ti @APPNAME@ service nginx start
+	docker exec -ti @APPNAME@ systemctl start @APPNAME@
+	docker exec -ti @APPNAME@ systemctl start nginx
 
 exec:
 	docker exec -ti @APPNAME@ bash -l
