@@ -2,4 +2,4 @@
 
 ln -s /etc/nginx/sites-available/@APPNAME@ /etc/nginx/sites-enabled/
 sqlite3 /var/www/@APPNAME@/api/@APPNAME@.db < /var/www/@APPNAME@/api/@APPNAME@.sql
-chown -R www-data:www-data /var/www/@APPNAME@/api/@APPNAME@.db
+chown -R www-data:www-data /var/www/@APPNAME@
